@@ -7,4 +7,6 @@ Support almost all conditions, include U-tube.
 
 Try it [here](http://lolwen.tk/g/grid-based-water-simulation/)
 
-Algorithm will be update later...
+Chinese algorithm see [here](http://indienova.com/u/lol/blogread/328)
+
+English version will be update later...
