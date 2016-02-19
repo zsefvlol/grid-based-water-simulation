@@ -7,12 +7,12 @@ var gridWater = {
     //grid data, 0 air, 1 wall, 2 water
     grid: [
         [1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,2,2,1,0,0,0,0,0,0,0,0,0,0],
-        [1,2,2,1,2,2,1,0,0,0,0,0,0,0,0,0,1],
+        [1,2,2,1,0,0,0,0,2,2,0,0,0,0,0,0,0],
+        [1,2,2,1,0,0,0,0,1,2,0,0,0,0,0,0,0],
+        [1,2,2,1,0,0,0,0,1,2,1,0,0,0,0,0,0],
+        [1,2,2,1,1,1,0,0,1,2,2,0,0,0,0,0,0],
+        [1,2,2,1,2,2,1,0,1,2,2,2,1,0,0,0,0],
+        [1,2,2,1,2,2,1,0,1,1,1,1,1,0,0,0,1],
         [1,2,2,2,2,2,1,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,1],
@@ -91,8 +91,11 @@ var gridWater = {
                         if (topWaterGridsHeight == -1) topWaterGridsHeight = m;
                         //if can drop down
                         if(m+1<h && g[m+1][n]==0){
-                            if(gridsToMoveTo.pressure == Number.MAX_VALUE)
-                                gridsToMoveTo.grid.push([m+1, n]);
+                            if(gridsToMoveTo.pressure == Number.MAX_VALUE){
+                                //avoid duplicate
+                                if(!gridsToMoveTo.grid.filter(function(e){return e[0]==m+1 && e[1]==n}))
+                                    gridsToMoveTo.grid.push([m+1, n]);
+                            }
                             else{
                                 gridsToMoveTo.grid = [[m+1, n]];
                                 gridsToMoveTo.pressure = Number.MAX_VALUE;
@@ -104,7 +107,9 @@ var gridWater = {
                                 continue;
                             }
                             else if(gridsToMoveTo.pressure == m-topWaterGridsHeight){
-                                gridsToMoveTo.grid.push([m, n-1]);
+                                //avoid duplicate
+                                if(!gridsToMoveTo.grid.filter(function(e){return e[0]==m && e[1]==n-1}))
+                                    gridsToMoveTo.grid.push([m, n-1]);
                             }
                             else{
                                 gridsToMoveTo.grid = [[m, n-1]];
@@ -113,12 +118,18 @@ var gridWater = {
                         }
                         //if can drop right
                         else if(n+1<w && g[m][n+1]==0 && m-topWaterGridsHeight > 0){
-                            if(gridsToMoveTo.pressure > m-topWaterGridsHeight)
+                            if(gridsToMoveTo.pressure > m-topWaterGridsHeight){
                                 continue;
-                            else if(gridsToMoveTo.pressure == m-topWaterGridsHeight)
-                                gridsToMoveTo.grid.push([m, n+1]);
-                            else
+                            }
+                            else if(gridsToMoveTo.pressure == m-topWaterGridsHeight){
+                                //avoid duplicate
+                                if(!gridsToMoveTo.grid.filter(function(e){return e[0]==m && e[1]==n+1}))
+                                    gridsToMoveTo.grid.push([m, n+1]);
+                            }
+                            else{
                                 gridsToMoveTo.grid = [[m, n+1]];
+                                gridsToMoveTo.pressure = m-topWaterGridsHeight;
+                            }
                         }
                         //if can press up, notice move up will lose 1 pressure
                         else if(m-1>0 && g[m-1][n]==0 && m-topWaterGridsHeight-1 > 0){
@@ -126,7 +137,9 @@ var gridWater = {
                                 continue;
                             }
                             else if(gridsToMoveTo.pressure == m-topWaterGridsHeight-1){
-                                gridsToMoveTo.grid.push([m-1, n]);
+                                //avoid duplicate
+                                if(!gridsToMoveTo.grid.filter(function(e){return e[0]==m-1 && e[1]==n}))
+                                    gridsToMoveTo.grid.push([m-1, n]);
                             }
                             else{
                                 gridsToMoveTo.pressure = m-topWaterGridsHeight-1;
