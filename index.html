@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid-based Water Simulation</title>
+    <style>
+        .line, .wall, .water, .air{
+            padding: 0;
+            margin: 0;
+            height: 16px;
+        }
+        .wall, .water, .air{
+            float: left;
+            height: 16px;
+            width: 16px;
+            text-align: center;
+            color: white;
+            font-size: 8px;
+            cursor: pointer;
+        }
+        .wall{
+            background: url("BlockCSS.png") -16px -0px;
+        }
+        .water{
+            background: url("BlockCSS.png") -160px -288px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="grid"></div>
+        <div id="ctrl-btns">
+            <button onclick="javascript:gridWater.play();">Play</button>
+            <button onclick="javascript:gridWater.next();">Next</button>
+            <button onclick="javascript:gridWater.toggleConnectivity();">Show Connectivity</button>
+        </div>
+        <div>
+            Click on grid to change type.
+        </div>
+    </div>
+    <div class="footer">
+        <script src="jquery.min.js"></script>
+        <script src="main.js"></script>
+    </div>
+</body>
+</html>
